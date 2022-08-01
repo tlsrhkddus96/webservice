@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
 
+
 @RequiredArgsConstructor
 @Service
+/*구글 로그인 이후 가져온 사용자의 정보(email, name, picture등)을 기반으로 가입 및 정보수정, 세션저장등의 기능을 지원*/
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
@@ -39,7 +41,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
 
-        //OAuth2UserService를 통해 가져온 OAuth2User의 attribute를 담을 클래스
+        //OAuth2UserService를 통해 가져온 OAuth2User의 attribute를 담을 클래스8
         //이후 네이버 등 다른 소셜 로그인도 이 클래스를 사용
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName,
                 oAuth2User.getAttributes());
