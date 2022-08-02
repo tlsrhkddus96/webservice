@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .userService(customOAuth2UserService);  //  소셜로그인 성공 시 후속 조치를 진행할 UserService인터페이스의 구현체를 등록
         // 소셜 서비스에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능을 명시가능
 
+
     }
 
 
