@@ -1,10 +1,16 @@
 package com.jojoldu.book.springboot.web;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.jojoldu.book.springboot.config.auth.SecurityConfig;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
@@ -16,13 +22,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 
-@RunWith(SpringRunner.class) // 스프링부트 테스트와 JUnit 사이에 연결자 역할
-@WebMvcTest(controllers = HelloController.class) // Web(Spring MVC)에 집중할수 있는 어노테이션  @Controller 사용가능,
+@ExtendWith(SpringExtension.class) // 스프링부트 테스트와 JUnit 사이에 연결자 역할
+@WebMvcTest(controllers = HelloController.class,// Web(Spring MVC)에 집중할수 있는 어노테이션  @Controller 사용가능,
+    excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+    })
+@MockBean(JpaMetamodelMappingContext.class)
 public class HelloControllerTest {
 
     @Autowired  //스프링이 관리하는 Bean 주입받음
     private MockMvc mvc;    // 웹API를 테스트할 때 사용, Http GET,POST등에 대한 API 테스트 가능
 
+    @WithMockUser(roles = "USER")
     @Test
     public void hello() throws Exception{
 
@@ -34,6 +45,8 @@ public class HelloControllerTest {
 
     }
 
+
+    @WithMockUser(roles = "USER")
     @Test
     public void helloDTO() throws Exception{
 
